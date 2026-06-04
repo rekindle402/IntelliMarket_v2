@@ -36,5 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 
-### Project prompts (local only) ###
-prmt/
+### Spring properties with sensitive values ###
+src/main/resources/application-local.properties
+src/main/resources/application-prod.properties
