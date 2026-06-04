@@ -105,10 +105,10 @@
 
 | Method | Endpoint | 기능 | 권한 |
 |--------|----------|------|------|
-| POST | /api/products | 상품 등록 | SELLER |
-| GET | /api/products/me | 내 상품 목록 조회 | SELLER |
-| PUT | /api/products/{productId} | 상품 수정 | SELLER (본인) |
-| DELETE | /api/products/{productId} | 상품 삭제 | SELLER (본인) |
+| POST | /api/sellers/products | 상품 등록 | SELLER |
+| GET | /api/sellers/products | 내 상품 목록 조회 | SELLER |
+| PUT | /api/sellers/products/{productId} | 상품 수정 | SELLER (본인) |
+| DELETE | /api/sellers/products/{productId} | 상품 삭제 | SELLER (본인) |
 | GET | /api/products | 상품 목록 조회 (공개, 검색/필터) | 비로그인 |
 | GET | /api/products/{productId} | 상품 상세 조회 (공개) | 비로그인 |
 | GET | /api/stores/{storeId}/products | 특정 스토어 상품 목록 | 비로그인 |
