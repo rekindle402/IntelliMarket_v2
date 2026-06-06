@@ -26,7 +26,7 @@ public class AuthService {
     //회원가입
     public void signup(SignupRequest request){
         if(checkEmailDuplicate(request.getEmail())){
-            throw new BusinessException(AuthErrorCode.EMAIL_ALEADY_EXISTS);
+            throw new BusinessException(AuthErrorCode.EMAIL_ALREADY_EXISTS);
         }
         
         Member member = Member.create(request, passwordEncoder.encode(request.getPassword()));

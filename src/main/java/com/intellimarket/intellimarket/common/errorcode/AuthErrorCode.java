@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum AuthErrorCode implements ErrorCode{
 
-    EMAIL_ALEADY_EXISTS(HttpStatus.CONFLICT, "AUT001", "이미 사용 중인 이메일입니다.");
+    EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "AUT001", "이미 사용 중인 이메일입니다.");
 
     private final HttpStatus status;
     private final String code;
