@@ -7,13 +7,13 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class LoginResponse {
+public class MemberSessionResponse {
     private Long memberId;
     private String name;
     private MemberRole role;
 
-    public static LoginResponse from(Member member){
-        return LoginResponse.builder()
+    public static MemberSessionResponse from(Member member){
+        return MemberSessionResponse.builder()
                 .memberId(member.getId())
                 .name(member.getName())
                 .role(member.getMemberRole())
