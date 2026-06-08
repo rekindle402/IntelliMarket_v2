@@ -1,10 +1,21 @@
 package com.intellimarket.intellimarket.domain.auth.controller;
 
 import com.intellimarket.intellimarket.common.ApiResponse;
+import com.intellimarket.intellimarket.domain.auth.dto.LoginRequest;
+import com.intellimarket.intellimarket.domain.auth.dto.LoginResponse;
 import com.intellimarket.intellimarket.domain.auth.dto.SignupRequest;
+import com.intellimarket.intellimarket.domain.auth.security.CustomUserDetails;
 import com.intellimarket.intellimarket.domain.auth.service.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class AuthController {
     private final AuthService authService;
+    private final AuthenticationManager authenticationManager;
 
     // 회원가입 요청
     @PostMapping("/signup")
@@ -20,5 +32,25 @@ public class AuthController {
         authService.signup(request);
 
         return ResponseEntity.ok(ApiResponse.success(null));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<LoginResponse>> login(@Valid @RequestBody LoginRequest request, HttpServletRequest httpRequest) {
+        UsernamePasswordAuthenticationToken authToken =
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
+
+        Authentication authentication = authenticationManager.authenticate(authToken);
+
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(authentication);
+        SecurityContextHolder.setContext(context);
+
+        HttpSession session = httpRequest.getSession(true);
+        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        LoginResponse response = LoginResponse.from(userDetails.getMember());
+
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 }
