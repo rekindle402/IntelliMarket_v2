@@ -53,4 +53,15 @@ public class AuthController {
 
         return ResponseEntity.ok(ApiResponse.success(response));
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse<Void>> logout(HttpServletRequest httpRequest) {
+        HttpSession session = httpRequest.getSession(false);
+        if (session != null){
+            session.invalidate();
+        }
+
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.ok(ApiResponse.success(null));
+    }
 }
