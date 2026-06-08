@@ -38,7 +38,3 @@ out/
 
 ### Claude local settings ###
 .claude/settings.local.json
-
-### Spring properties with sensitive values ###
-src/main/resources/application-local.properties
-src/main/resources/application-prod.properties
