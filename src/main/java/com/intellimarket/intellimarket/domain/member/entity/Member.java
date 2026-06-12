@@ -89,4 +89,10 @@ public class Member extends BaseTimeEntity {
     public void updatePassword(String passwordHash) {
         this.passwordHash = passwordHash;
     }
+
+    public void updateProfile(String name, Integer birthYear, Gender gender) {
+        this.name = name;
+        this.birthYear = birthYear;
+        this.gender = gender;
+    }
 }
