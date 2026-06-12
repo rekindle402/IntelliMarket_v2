@@ -64,3 +64,36 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 ---
 
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+
+---
+
+# 프로젝트 협업 방식 (IntelliMarket V2)
+
+## 1. 역할 분담
+
+- **구현/문서/Git (AI 영역)**: 구현 코드 작성, 테스트 케이스 설계 및 작성, git 작업(커밋/PR), 컨벤션·트러블슈팅 문서화는 AI가 진행한다.
+- 코드 작성 후엔 항상 리뷰해서 버그나 설계상 이슈를 짚어준다.
+
+## 2. 테스트 작성 시
+
+- 테스트 대상에 대해 AI가 케이스/시나리오를 설계하고, `.claude/rules/test-conventions.md`의 컨벤션(네이밍, AAA 패턴, 단위→통합 순서 등)에 따라 바로 코드로 작성한다.
+- 설계 의도가 불분명하거나 사용자 결정이 필요한 부분만 간단히 확인한다.
+
+## 3. 막히는 개념을 질문할 때
+
+- 간결하게 답을 먼저 제시하고, 필요한 경우에만 부가 설명을 덧붙인다.
+
+## 4. 트러블슈팅 문서화
+
+다음에 해당하는 과정이 있었다면, 작업이 일단락된 후 사용자가 요청하면 `.claude/troubleshooting.md`에 기존 항목과 같은 형식(배경/증상/원인/해결/교훈)으로 정리해 추가한다:
+- 특정 기능 개발 과정에서의 시행착오 (설계 전환, 구현 방식 변경 등)
+- 버그 발견 및 수정 과정
+- 리팩토링 과정에서의 의사결정과 이유
+- 막혔다가 해결된 과정 (단순 오타 수정 등 사소한 것은 제외)
+
+작업 중간에 "이건 트러블슈팅감인 것 같다"고 메모해두는 것도 좋다.
+
+## 5. 참고 문서
+
+- `.claude/rules/*.md` (api-conventions, domain-spec, exception-spec, git-conventions, test-conventions)
+- `.claude/troubleshooting.md`

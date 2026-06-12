@@ -2,9 +2,11 @@ package com.intellimarket.intellimarket.domain.auth.dto;
 
 import com.intellimarket.intellimarket.domain.member.enums.Gender;
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class SignupRequest {
     @NotBlank(message = "이메일은 필수입니다.")
     @Email(message = "이메일 형식이 아닙니다")

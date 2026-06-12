@@ -100,3 +100,36 @@ HTTP ERROR 403
 
 **교훈**
 - 트랜잭션 경계를 넘어 전달된 엔티티는 준영속 상태일 수 있으므로, 다른 트랜잭션에서 변경이 필요하면 해당 트랜잭션 내에서 다시 조회해야 함
+
+---
+
+## [TS-004] DTO 검증 실패(`MethodArgumentNotValidException`) 처리 시행착오
+
+**발생일:** 2026-06-08
+
+**배경**
+- 회원가입 요청에서 비밀번호 형식이 잘못된 경우(`@Pattern` 검증 실패) 응답이 우리 `ErrorResponse` 형식으로 내려오지 않는 문제를 발견
+- `exception-spec.md`에는 `MethodArgumentNotValidException`을 `GlobalExceptionHandler`가 처리하도록 정의되어 있었으나 실제 구현이 누락된 상태였음
+
+**증상 및 시행착오**
+
+1. **`@ExceptionHandler` 어노테이션 값 오기재**
+   - `MethodArgumentNotValidException`을 처리하는 메서드에 `@ExceptionHandler(BusinessException.class)`를 그대로 복붙하여 어노테이션 값과 파라미터 타입이 불일치
+   - `BusinessException.class`에 두 개의 핸들러 메서드가 매핑되어 `Ambiguous @ExceptionHandler method` 예외로 서버가 정상 기동되지 않음 → 그 사이 클라이언트가 받은 `403` 응답은 수정 전(또는 기동 실패 상태의) 서버 인스턴스의 응답이었음
+   - `@ExceptionHandler(MethodArgumentNotValidException.class)`로 수정하여 해결
+
+2. **에러 코드를 `AuthErrorCode`에 두려고 했던 점**
+   - 처음에는 "회원가입 중 발생했으니" `AuthErrorCode`에 추가하려 했으나, `MethodArgumentNotValidException`은 `@Valid`가 적용된 모든 도메인의 요청 DTO에서 공통으로 발생하는 예외임을 인지
+   - 도메인에 종속되지 않는 별도의 `CommonErrorCode`(접두사 `COM`)를 만들어 `INVALID_INPUT`으로 분류
+
+3. **고정 메시지 vs 동적 메시지 혼동**
+   - `ErrorCode`의 `message`는 "검증 실패"라는 분류상 고정 메시지이지만, 실제로 클라이언트에게 보여줘야 할 메시지는 `@Pattern(message = "...")` 등 필드별로 다르게 정의된 동적 메시지
+   - `ErrorResponse.of(ErrorCode)`(고정 메시지) 대신, `ErrorResponse.of(ErrorCode, String message)` 오버로드를 추가하여 "분류 정보(`error`/`code`/`status`)는 `ErrorCode`에서, 실제 메시지는 `BindingResult.getFieldErrors().get(0).getDefaultMessage()`로 동적 추출"하는 방식으로 해결
+
+4. **`HttpStatus` 오기재**
+   - `CommonErrorCode.INVALID_INPUT`을 `EMAIL_ALREADY_EXISTS`(`HttpStatus.CONFLICT`, 409)를 참고해 작성하다가 상태 코드를 잘못 그대로 사용 → 검증 실패는 `400 Bad Request`이므로 `HttpStatus.BAD_REQUEST`로 수정
+
+**교훈**
+- `@ExceptionHandler` 어노테이션 값과 메서드 파라미터 타입은 반드시 일치해야 하며, 불일치 시 컴파일 오류가 아닌 **런타임(애플리케이션 기동 시점)** 오류로 나타나 원인 파악이 어려울 수 있음
+- 프레임워크가 던지는 공통 예외(`MethodArgumentNotValidException` 등)에 대한 `ErrorCode`는 특정 도메인이 아닌 공통(`Common`) 영역으로 분리해야 함
+- "예외의 분류(고정)"와 "사용자에게 보여줄 메시지(동적)"를 분리해서 설계하면, `ErrorCode`의 일관성을 유지하면서도 상황별 메시지를 유연하게 응답할 수 있음
