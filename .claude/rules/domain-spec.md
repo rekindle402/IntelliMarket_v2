@@ -64,8 +64,8 @@
 
 ### MEMBER — 회원
 
-| Method | Endpoint | 기능 | 권한 |
-|--------|----------|------|------|
+|Method | Endpoint | 기능 | 권한 |
+|-------|----------|------|------|
 | GET | /api/members/me | 내 프로필 조회 | USER |
 | PUT | /api/members/me | 내 프로필 수정 | USER |
 | DELETE | /api/members/me | 회원 탈퇴 | USER |

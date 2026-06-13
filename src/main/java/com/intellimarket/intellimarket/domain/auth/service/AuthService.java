@@ -17,11 +17,6 @@ public class AuthService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    //이메일 중복 체크
-    public boolean checkEmailDuplicate(String email){
-        return memberRepository.existsByEmail(email);
-    }
-
     //회원가입
     public Member signup(SignupRequest request){
         if(checkEmailDuplicate(request.getEmail())){
@@ -32,4 +27,8 @@ public class AuthService {
         return memberRepository.save(member);
     }
 
+    //이메일 중복 체크
+    private boolean checkEmailDuplicate(String email){
+        return memberRepository.existsByEmail(email);
+    }
 }

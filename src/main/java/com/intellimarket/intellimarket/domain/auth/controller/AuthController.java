@@ -29,7 +29,7 @@ public class AuthController {
 
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<MemberSessionResponse>> me(@AuthenticationPrincipal CustomUserDetails userDetails){
-        MemberSessionResponse response = MemberSessionResponse.from(userDetails.getMember());
+    MemberSessionResponse response = MemberSessionResponse.from(userDetails.getMember());
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 

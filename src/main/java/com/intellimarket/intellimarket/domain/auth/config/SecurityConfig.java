@@ -44,8 +44,9 @@ public class SecurityConfig {
 
                         // 역할별 권한 (RoleHierarchy 적용: ADMIN > SELLER > USER)
                         .requestMatchers("/api/admin/**").access(withRole(roleHierarchy, "ADMIN"))
+                        .requestMatchers("/api/sellers/apply").access(withRole(roleHierarchy, "USER"))
                         .requestMatchers("/api/stores/me", "/api/sellers/**").access(withRole(roleHierarchy, "SELLER"))
-                        .requestMatchers("/api/sellers/apply", "/api/members/**").access(withRole(roleHierarchy, "USER"))
+                        .requestMatchers("/api/members/**").access(withRole(roleHierarchy, "USER"))
 
                         // 로그인 사용자 전체
                         .requestMatchers("/api/auth/logout", "/api/auth/me").authenticated()

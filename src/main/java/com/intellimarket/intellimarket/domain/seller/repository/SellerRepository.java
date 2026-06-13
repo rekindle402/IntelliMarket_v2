@@ -9,5 +9,5 @@ public interface SellerRepository extends JpaRepository<Seller, Long> {
     boolean existsByMemberId(Long memberId);
     Optional<Seller> findByMemberId(Long memberId);
 
-    boolean existsByBusinessNumber(String businessNumber);
+    boolean existsByBusinessRegistrationNo(String businessNumber);
 }

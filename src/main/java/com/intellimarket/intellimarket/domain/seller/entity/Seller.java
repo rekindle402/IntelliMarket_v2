@@ -58,7 +58,7 @@ public class Seller extends BaseTimeEntity {
         this.sellerStatus = sellerStatus;
     }
 
-    public static Seller create(Optional<Member> member, String businessName, String businessRegistrationNo, String representativeName){
+    public static Seller create(Member member, String businessName, String businessRegistrationNo, String representativeName){
         return Seller.builder()
                 .member(member)
                 .businessName(businessName)
