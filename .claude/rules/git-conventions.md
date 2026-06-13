@@ -23,7 +23,7 @@
 
 ## 커밋 메시지
 
-영어로 작성. `타입: 설명` 형식.
+한글로 작성. `타입: 설명` 형식.
 
 | 타입 | 용도 |
 |------|------|
@@ -36,9 +36,9 @@
 
 예시:
 ```
-feat: add member login API
-fix: resolve null pointer in order service
-chore: add base application config
+feat: 멤버 로그인 API 추가
+fix: 주문 상태 null 참조 오류 수정
+chore: 기본 애플리케이션 설정 추가
 ```
 
 ---

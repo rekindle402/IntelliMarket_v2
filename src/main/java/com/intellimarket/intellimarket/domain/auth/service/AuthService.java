@@ -15,21 +15,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class AuthService {
     private final MemberRepository memberRepository;
-    private  final PasswordEncoder passwordEncoder;
-
-    //이메일 중복 체크
-    public boolean checkEmailDuplicate(String email){
-        return memberRepository.existsByEmail(email);
-    }
+    private final PasswordEncoder passwordEncoder;
 
     //회원가입
-    public void signup(SignupRequest request){
+    public Member signup(SignupRequest request){
         if(checkEmailDuplicate(request.getEmail())){
             throw new BusinessException(AuthErrorCode.EMAIL_ALREADY_EXISTS);
         }
         
         Member member = Member.create(request, passwordEncoder.encode(request.getPassword()));
-        memberRepository.save(member);
+        return memberRepository.save(member);
     }
 
+    //이메일 중복 체크
+    private boolean checkEmailDuplicate(String email){
+        return memberRepository.existsByEmail(email);
+    }
 }
