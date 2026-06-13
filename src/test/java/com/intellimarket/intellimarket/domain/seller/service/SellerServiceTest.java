@@ -23,10 +23,19 @@ public class SellerServiceTest {
     @Mock
     private SellerRepository sellerRepository;
 
-    private SellerApplyRequest request;
-
     @InjectMocks
     private SellerService sellerService;
+
+    private SellerApplyRequest request;
+
+    @BeforeEach() // 테스트를 수행할때 매번 먼저 수행됨
+    void setUp() {
+        request = SellerApplyRequest.builder()
+                .businessName("주식회사 테스트")
+                .representativeName("김대표")
+                .businessRegistrationNo("123-45-67890")
+                .build();
+    }
 
     @Test
     @DisplayName("이미 존재하는 사업자등록번호로 가입을 시도하면 BUSINESS_NUMBER_ALREADY_EXISTS 예외가 발생한다")
@@ -51,13 +60,6 @@ public class SellerServiceTest {
 
         assertThat(exception.getErrorCode()).isEqualTo(SellerErrorCode.ALREADY_APPLIED);
     }
-    
-    @BeforeEach()
-    void setUp() {
-        request = SellerApplyRequest.builder()
-                .businessName("주식회사 테스트")
-                .representativeName("김대표")
-                .businessRegistrationNo("123-45-67890")
-                .build();
-    }
+
+
 }
