@@ -18,6 +18,12 @@ public class SellerService {
     private final SellerRepository sellerRepository;
     private final MemberRepository memberRepository;
 
+    @Transactional(readOnly = true)
+    public Seller getMe(Long memberId) {
+        return sellerRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new BusinessException(SellerErrorCode.SELLER_NOT_FOUND));
+    }
+
     public Seller apply(Long memberId, SellerApplyRequest request) {
         if(checkBusinessNumberDuplicate(request.getBusinessRegistrationNo())){
             throw new BusinessException(SellerErrorCode.BUSINESS_NUMBER_ALREADY_EXISTS);
