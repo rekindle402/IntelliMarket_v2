@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -66,15 +67,15 @@ public class Seller extends BaseTimeEntity {
                 .sellerStatus(SellerStatus.PENDING)
                 .build();
     }
-    public void approve() {
+    public void approve(LocalDateTime approvedAt) {
         this.sellerStatus = SellerStatus.APPROVED;
-        this.approvedAt = LocalDateTime.now();
+        this.approvedAt = approvedAt;
     }
 
-    public void reject(String rejectionReason) {
+    public void reject(String rejectionReason, LocalDateTime rejectedAt) {
         this.sellerStatus = SellerStatus.REJECTED;
         this.rejectionReason = rejectionReason;
-        this.rejectedAt = LocalDateTime.now();
+        this.rejectedAt = rejectedAt;
     }
 
     public void suspend() {
