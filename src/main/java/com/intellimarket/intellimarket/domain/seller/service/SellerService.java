@@ -6,17 +6,26 @@ import com.intellimarket.intellimarket.common.exception.BusinessException;
 import com.intellimarket.intellimarket.domain.member.entity.Member;
 import com.intellimarket.intellimarket.domain.member.repository.MemberRepository;
 import com.intellimarket.intellimarket.domain.seller.dto.SellerApplyRequest;
+import com.intellimarket.intellimarket.domain.seller.dto.SellerMeResponse;
 import com.intellimarket.intellimarket.domain.seller.entity.Seller;
 import com.intellimarket.intellimarket.domain.seller.repository.SellerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class SellerService {
     private final SellerRepository sellerRepository;
     private final MemberRepository memberRepository;
+
+    @Transactional(readOnly = true)
+    public SellerMeResponse getMe(Long memberId) {
+        Seller seller = sellerRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new BusinessException(SellerErrorCode.SELLER_NOT_FOUND));
+        return SellerMeResponse.from(seller);
+    }
 
     public Seller apply(Long memberId, SellerApplyRequest request) {
         if(checkBusinessNumberDuplicate(request.getBusinessRegistrationNo())){
