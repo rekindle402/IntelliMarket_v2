@@ -10,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -48,7 +47,7 @@ public class Seller extends BaseTimeEntity {
     @Column(name = "rejection_reason")
     private String rejectionReason;
 
-    @Builder(access = AccessLevel.PRIVATE)
+    @Builder
     public Seller(Member member, String businessName, String businessRegistrationNo,
                   String representativeName, SellerStatus sellerStatus) {
         this.member = member;
@@ -58,15 +57,6 @@ public class Seller extends BaseTimeEntity {
         this.sellerStatus = sellerStatus;
     }
 
-    public static Seller create(Member member, String businessName, String businessRegistrationNo, String representativeName){
-        return Seller.builder()
-                .member(member)
-                .businessName(businessName)
-                .businessRegistrationNo(businessRegistrationNo)
-                .representativeName(representativeName)
-                .sellerStatus(SellerStatus.PENDING)
-                .build();
-    }
     public void approve(LocalDateTime approvedAt) {
         this.sellerStatus = SellerStatus.APPROVED;
         this.approvedAt = approvedAt;
