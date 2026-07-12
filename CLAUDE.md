@@ -97,5 +97,5 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 ## 5. 참고 문서
 
-- `.claude/rules/*.md` (api-conventions, domain-spec, exception-spec, git-conventions, test-conventions)
-- `.claude/troubleshooting.md`
+- `.claude/rules/*.md` (API-CONVENTIONS, DOMAIN-SPEC, EXCEPTION-SPEC, GIT-CONVENTIONS, TEST-CONVENTIONS)
+- `.claude/TROUBLESHOOTING.md`
