@@ -4,7 +4,6 @@ import com.intellimarket.intellimarket.common.ApiResponse;
 import com.intellimarket.intellimarket.domain.auth.security.CustomUserDetails;
 import com.intellimarket.intellimarket.domain.seller.dto.SellerApplyRequest;
 import com.intellimarket.intellimarket.domain.seller.dto.SellerMeResponse;
-import com.intellimarket.intellimarket.domain.seller.entity.Seller;
 import com.intellimarket.intellimarket.domain.seller.service.SellerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +23,7 @@ public class SellerController {
 
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<SellerMeResponse>> me(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        Seller seller = sellerService.getMe(userDetails.getMember().getId());
-        return ResponseEntity.ok(ApiResponse.success(SellerMeResponse.from(seller)));
+        return ResponseEntity.ok(ApiResponse.success(sellerService.getMe(userDetails.getMember().getId())));
     }
 
     @PostMapping("/apply")
