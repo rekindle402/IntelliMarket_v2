@@ -47,7 +47,7 @@ public class Seller extends BaseTimeEntity {
     @Column(name = "rejection_reason")
     private String rejectionReason;
 
-    @Builder
+    @Builder(access = AccessLevel.PRIVATE)
     public Seller(Member member, String businessName, String businessRegistrationNo,
                   String representativeName, SellerStatus sellerStatus) {
         this.member = member;
@@ -57,15 +57,24 @@ public class Seller extends BaseTimeEntity {
         this.sellerStatus = sellerStatus;
     }
 
-    public void approve(LocalDateTime approvedAt) {
+    public static Seller create(Member member, String businessName, String businessRegistrationNo, String representativeName){
+        return Seller.builder()
+                .member(member)
+                .businessName(businessName)
+                .businessRegistrationNo(businessRegistrationNo)
+                .representativeName(representativeName)
+                .sellerStatus(SellerStatus.PENDING)
+                .build();
+    }
+    public void approve() {
         this.sellerStatus = SellerStatus.APPROVED;
-        this.approvedAt = approvedAt;
+        this.approvedAt = LocalDateTime.now();
     }
 
-    public void reject(String rejectionReason, LocalDateTime rejectedAt) {
+    public void reject(String rejectionReason) {
         this.sellerStatus = SellerStatus.REJECTED;
         this.rejectionReason = rejectionReason;
-        this.rejectedAt = rejectedAt;
+        this.rejectedAt = LocalDateTime.now();
     }
 
     public void suspend() {
